@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday CUTU</title>
+    <title>Happy Birthday CUTU 🎉</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,8 +13,8 @@
     <div class="container">
         <h1>🎉 HAPPY BIRTHDAY CUTU 🎉</h1>
         
-        <div id="timer-container">
-            <p>Countdown to the Big Day: 🎂</p>
+        <div id="timer-container" class="timer-card">
+            <h3>Countdown to Your Special Day ✨</h3>
             <div class="countdown-display">
                 <span id="days">00</span> Days 
                 <span id="hours">00</span> Hours 
@@ -28,21 +28,21 @@
         <div class="slideshow">
             <div class="slide slide-1 active">
                 <h2>Welcome to Your Birthday Page! 💖</h2>
-                <p>Use the buttons below or keyboard arrows to see your surprises.</p>
+                <p>I built this space just for you. Use the buttons below or keyboard arrows to see your surprises!</p>
             </div>
 
             <div class="slide slide-2">
                 <h2>Blow out your candles! 🎂</h2>
-                <div id="cake" style="cursor: pointer; font-size: 50px; text-align: center;">
+                <div id="cake" style="cursor: pointer; font-size: 60px; text-align: center; margin: 20px 0;">
                     <span id="flame">🔥</span><br>🎂
                 </div>
-                <p>Click the cake to blow the candle out!</p>
+                <p>Click the cake to make a wish and blow out the candle!</p>
             </div>
 
             <div class="slide slide-3">
                 <h2>Open your gift! 🎁</h2>
-                <div id="giftBox" style="cursor: pointer; font-size: 50px; text-align: center;">🎁</div>
-                <div id="giftMessage" style="display: none; color: #ff69b4; font-weight: bold; margin-top: 15px;">
+                <div id="giftBox" style="cursor: pointer; font-size: 60px; text-align: center; margin: 20px 0;">🎁</div>
+                <div id="giftMessage" style="display: none; color: #ff69b4; font-weight: bold; margin-top: 15px; font-size: 1.2rem;">
                     ✨ Surprise! You are the best thing that ever happened to me. ✨
                 </div>
             </div>
@@ -54,12 +54,12 @@
                     <button onclick="selectQuizAnswer('Cozy & Relaxed 🍿')">Movie Night 🍿</button>
                     <button onclick="selectQuizAnswer('Romantic & Sweet 🌹')">Romantic Dinner 🌹</button>
                 </div>
-                <div id="quizResult" style="display: none; margin-top: 15px;"></div>
+                <div id="quizResult" class="quiz-result" style="display: none; margin-top: 15px;"></div>
             </div>
 
             <div class="slide slide-5">
                 <h2>Capture a Birthday Memory! 📸</h2>
-                <video id="cameraVideo" autoplay playsinline style="width: 100%; max-width: 300px; border-radius: 10px; background: #000;"></video>
+                <video id="cameraVideo" autoplay playsinline style="width: 100%; max-width: 300px; border-radius: 10px; background: #000; margin: 10px auto; display: block;"></video>
                 <div style="margin-top: 10px;">
                     <button id="startCamera">Open Camera</button>
                     <button id="capturePhoto">Take Photo</button>
@@ -67,22 +67,22 @@
                 <div id="photoPreview" style="margin-top: 15px;"></div>
             </div>
 
-            <div class="slide slide-6"><h2>Slide 6 💖</h2><p>Your beautiful message goes here...</p></div>
+            <div class="slide slide-6"><h2>Slide 6 💖</h2><p>Your beautiful message or memory description goes here...</p></div>
             <div class="slide slide-7"><h2>Slide 7 ✨</h2><p>Your beautiful message goes here...</p></div>
             <div class="slide slide-8"><h2>Slide 8 🌹</h2><p>Your beautiful message goes here...</p></div>
             <div class="slide slide-9"><h2>Slide 9 🎈</h2><p>Your beautiful message goes here...</p></div>
             <div class="slide slide-10"><h2>Slide 10 🧸</h2><p>Your beautiful message goes here...</p></div>
             <div class="slide slide-11"><h2>Slide 11 💞</h2><p>Your beautiful message goes here...</p></div>
-            <div class="slide slide-12"><h2>Slide 12 👑</h2><p>Happy Birthday once again!</p></div>
+            <div class="slide slide-12"><h2>Slide 12 👑</h2><p>Happy Birthday once again! May all your wishes come true! 🌟</p></div>
         </div>
 
-        <div class="navigation-controls" style="margin-top: 20px;">
+        <div class="navigation-controls" style="margin-top: 30px;">
             <button onclick="previousSlide()">⬅️ Prev</button>
-            <span style="margin: 0 15px;">Slide <span id="currentSlide">1</span> of <span id="totalSlides">12</span></span>
+            <span style="margin: 0 15px; font-weight: bold;">Slide <span id="currentSlide">1</span> of <span id="totalSlides">12</span></span>
             <button onclick="nextSlide()">Next ➡️</button>
         </div>
 
-        <div id="dotsContainer" style="margin-top: 15px;"></div>
+        <div id="dotsContainer" style="margin-top: 20px;"></div>
     </div>
 
     <script src="script.js"></script>
