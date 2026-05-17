@@ -12,7 +12,7 @@ let cameraStream = null;
 
 document.addEventListener("DOMContentLoaded", () => {
     createDots();
-    updateCounter(); // Initialize counters cleanly on load
+    updateCounter(); 
     startCountdown();
     createFloatingHearts();
     setupCake();
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function nextSlide() {
     currentSlide++;
     if (currentSlide > totalSlides) {
-        currentSlide = 1; // Loops back to the first slide
+        currentSlide = 1;
     }
     updateSlide();
 }
@@ -35,7 +35,7 @@ function nextSlide() {
 function previousSlide() {
     currentSlide--;
     if (currentSlide < 1) {
-        currentSlide = totalSlides; // Loops to the last slide
+        currentSlide = totalSlides;
     }
     updateSlide();
 }
@@ -121,19 +121,18 @@ document.addEventListener("keydown", (e) => {
 // ===============================
 
 function startCountdown() {
-    // Sets the target date to May 26
+    // Target birthday date set to May 26
     const targetDate = new Date("May 26, 2026 00:00:00").getTime();
 
     const interval = setInterval(() => {
         const now = new Date().getTime();
         const distance = targetDate - now;
 
-        // If the countdown is finished, display a message
         if (distance < 0) {
             clearInterval(interval);
             const timerContainer = document.getElementById("timer-container"); 
             if (timerContainer) {
-                timerContainer.innerHTML = "🎉 Happy Birthday! 🎂";
+                timerContainer.innerHTML = "<div style='font-size: 1.5rem; color: #ff69b4; font-weight: bold;'>🎉 Happy Birthday! 🎂</div>";
             }
             return;
         }
@@ -157,7 +156,7 @@ function startCountdown() {
 }
 
 // ===============================
-// Floating Hearts
+// Floating Hearts Background
 // ===============================
 
 function createFloatingHearts() {
@@ -189,4 +188,113 @@ function createFloatingHearts() {
 // ===============================
 
 function setupCake() {
-    const cake = document.
+    const cake = document.getElementById("cake");
+    if (!cake) return;
+
+    cake.addEventListener("click", () => {
+        const flame = document.getElementById("flame");
+        if (flame) {
+            flame.style.opacity = "0"; 
+            triggerConfetti();
+            setTimeout(() => {
+                flame.style.opacity = "1"; 
+            }, 4000); 
+        }
+    });
+}
+
+// ===============================
+// Gift Interaction
+// ===============================
+
+function setupGift() {
+    const giftBox = document.getElementById("giftBox");
+    if (!giftBox) return;
+
+    giftBox.addEventListener("click", () => {
+        const message = document.getElementById("giftMessage");
+        if (!message) return;
+
+        if (message.style.display === "block") {
+            message.style.display = "none";
+        } else {
+            message.style.display = "block";
+            triggerConfetti();
+        }
+    });
+}
+
+// ===============================
+// Camera Setup
+// ===============================
+
+function setupCamera() {
+    const startBtn = document.getElementById("startCamera");
+    const captureBtn = document.getElementById("capturePhoto");
+
+    if (startBtn) {
+        startBtn.addEventListener("click", async () => {
+            try {
+                const video = document.getElementById("cameraVideo");
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: "user" }
+                });
+                if (video) video.srcObject = cameraStream;
+            } catch (err) {
+                alert("Please allow camera access to take a selfie!");
+            }
+        });
+    }
+
+    if (captureBtn) {
+        captureBtn.addEventListener("click", () => {
+            const video = document.getElementById("cameraVideo");
+            if (!video || !video.videoWidth) return;
+
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0);
+
+            const image = document.createElement("img");
+            image.src = canvas.toDataURL("image/png");
+            image.style.maxWidth = "100%";
+            image.style.borderRadius = "10px";
+            image.style.marginTop = "10px";
+
+            const preview = document.getElementById("photoPreview");
+            if (preview) {
+                preview.innerHTML = "";
+                preview.appendChild(image);
+                triggerConfetti();
+            }
+        });
+    }
+}
+
+// ===============================
+// Quiz
+// ===============================
+
+function selectQuizAnswer(answer) {
+    const result = document.getElementById("quizResult");
+    if (!result) return;
+
+    result.style.display = "block";
+    result.innerHTML = "🎉 Your birthday vibe is <b>" + answer + "</b> 💖";
+}
+
+// ===============================
+// Confetti Animation
+// ===============================
+
+function triggerConfetti() {
+    const colors = ['#ff69b4', '#ffcb05', '#1e90ff', '#00ff7f', '#9370db'];
+
+    for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+
+        confetti.style.left = Math.random() * 100 +
