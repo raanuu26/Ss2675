@@ -297,4 +297,4 @@ function triggerConfetti() {
         const confetti = document.createElement("div");
         confetti.className = "confetti";
 
-        confetti.style.left = Math.random() * 100 +
+        confetti.style.left = Math.random() * 100 + 
