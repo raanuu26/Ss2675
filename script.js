@@ -7,7 +7,7 @@ const totalSlides = 12;
 let cameraStream = null;
 
 // ===============================
-// Website Start
+// Website Start (Initialization)
 // ===============================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,7 +50,6 @@ function goToSlide(number) {
 }
 
 function updateSlide() {
-
     const slides = document.querySelectorAll(".slide");
 
     slides.forEach((slide) => {
@@ -72,7 +71,6 @@ function updateSlide() {
 // ===============================
 
 function updateCounter() {
-
     const current = document.getElementById("currentSlide");
     const total = document.getElementById("totalSlides");
 
@@ -90,13 +88,12 @@ function updateCounter() {
 // ===============================
 
 function createDots() {
-
     const container = document.getElementById("dotsContainer");
 
     if (!container) return;
+    container.innerHTML = ""; // Clears old dots to prevent duplication
 
     for (let i = 1; i <= totalSlides; i++) {
-
         const dot = document.createElement("span");
 
         dot.classList.add("dot");
@@ -112,7 +109,6 @@ function createDots() {
 }
 
 function updateDots() {
-
     const dots = document.querySelectorAll(".dot");
 
     dots.forEach((dot) => {
@@ -129,7 +125,6 @@ function updateDots() {
 // ===============================
 
 document.addEventListener("keydown", (e) => {
-
     if (e.key === "ArrowRight") {
         nextSlide();
     }
@@ -144,27 +139,31 @@ document.addEventListener("keydown", (e) => {
 // ===============================
 
 function startCountdown() {
-
     const targetDate = new Date("May 26, 2026 00:00:00").getTime();
 
-    setInterval(() => {
-
+    const interval = setInterval(() => {
         const now = new Date().getTime();
-
         const distance = targetDate - now;
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        // Stops the timer logic if the date has passed
+        if (distance < 0) {
+            clearInterval(interval);
+            const timerContainer = document.getElementById("timer-container"); 
+            if (timerContainer) {
+                timerContainer.innerHTML = "🎉 Happy Birthday! 🎂";
+            }
+            return;
+        }
 
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
             (distance % (1000 * 60 * 60 * 24)) /
             (1000 * 60 * 60)
         );
-
         const minutes = Math.floor(
             (distance % (1000 * 60 * 60)) /
             (1000 * 60)
         );
-
         const seconds = Math.floor(
             (distance % (1000 * 60)) / 1000
         );
@@ -187,7 +186,6 @@ function startCountdown() {
 // ===============================
 
 function createFloatingHearts() {
-
     const container = document.querySelector(".hearts-container");
 
     if (!container) return;
@@ -195,18 +193,14 @@ function createFloatingHearts() {
     const hearts = ["❤️", "💕", "💖", "💗"];
 
     setInterval(() => {
-
         const heart = document.createElement("div");
 
         heart.className = "heart-float";
-
-        heart.innerText =
-            hearts[Math.floor(Math.random() * hearts.length)];
-
+        heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+        
         heart.style.left = Math.random() * 100 + "%";
-
-        heart.style.fontSize =
-            (Math.random() * 20 + 20) + "px";
+        heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+        heart.style.position = "absolute";
 
         container.appendChild(heart);
 
@@ -222,17 +216,14 @@ function createFloatingHearts() {
 // ===============================
 
 function setupCake() {
-
     const cake = document.getElementById("cake");
 
     if (!cake) return;
 
     cake.addEventListener("click", () => {
-
         const flame = document.getElementById("flame");
 
         if (flame) {
-
             flame.style.opacity = "0";
 
             triggerConfetti();
@@ -249,26 +240,19 @@ function setupCake() {
 // ===============================
 
 function setupGift() {
-
     const giftBox = document.getElementById("giftBox");
 
     if (!giftBox) return;
 
     giftBox.addEventListener("click", () => {
-
-        const message =
-            document.getElementById("giftMessage");
+        const message = document.getElementById("giftMessage");
 
         if (!message) return;
 
         if (message.style.display === "block") {
-
             message.style.display = "none";
-
         } else {
-
             message.style.display = "block";
-
             triggerConfetti();
         }
     });
@@ -279,69 +263,50 @@ function setupGift() {
 // ===============================
 
 function setupCamera() {
-
-    const startBtn =
-        document.getElementById("startCamera");
-
-    const captureBtn =
-        document.getElementById("capturePhoto");
+    const startBtn = document.getElementById("startCamera");
+    const captureBtn = document.getElementById("capturePhoto");
 
     if (startBtn) {
-
         startBtn.addEventListener("click", async () => {
-
             try {
+                const video = document.getElementById("cameraVideo");
 
-                const video =
-                    document.getElementById("cameraVideo");
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: true
+                });
 
-                cameraStream =
-                    await navigator.mediaDevices.getUserMedia({
-                        video: true
-                    });
-
-                video.srcObject = cameraStream;
+                if (video) video.srcObject = cameraStream;
 
             } catch (err) {
-
                 alert("Please allow camera access!");
-
             }
         });
     }
 
     if (captureBtn) {
-
         captureBtn.addEventListener("click", () => {
+            const video = document.getElementById("cameraVideo");
 
-            const video =
-                document.getElementById("cameraVideo");
+            if (!video || !video.videoWidth) return;
 
-            if (!video) return;
-
-            const canvas =
-                document.createElement("canvas");
+            const canvas = document.createElement("canvas");
 
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 
             const ctx = canvas.getContext("2d");
-
             ctx.drawImage(video, 0, 0);
 
-            const image =
-                document.createElement("img");
-
+            const image = document.createElement("img");
             image.src = canvas.toDataURL("image/png");
 
-            const preview =
-                document.getElementById("photoPreview");
+            const preview = document.getElementById("photoPreview");
 
-            preview.innerHTML = "";
-
-            preview.appendChild(image);
-
-            triggerConfetti();
+            if (preview) {
+                preview.innerHTML = "";
+                preview.appendChild(image);
+                triggerConfetti();
+            }
         });
     }
 }
@@ -351,18 +316,12 @@ function setupCamera() {
 // ===============================
 
 function selectQuizAnswer(answer) {
-
-    const result =
-        document.getElementById("quizResult");
+    const result = document.getElementById("quizResult");
 
     if (!result) return;
 
     result.style.display = "block";
-
-    result.innerHTML =
-        "🎉 Your birthday vibe is <b>" +
-        answer +
-        "</b> 💖";
+    result.innerHTML = "🎉 Your birthday vibe is <b>" + answer + "</b> 💖";
 }
 
 // ===============================
@@ -370,24 +329,28 @@ function selectQuizAnswer(answer) {
 // ===============================
 
 function triggerConfetti() {
+    const colors = ['#ff69b4', '#ffcb05', '#1e90ff', '#00ff7f', '#9370db'];
 
     for (let i = 0; i < 40; i++) {
-
-        const confetti =
-            document.createElement("div");
+        const confetti = document.createElement("div");
 
         confetti.className = "confetti";
 
-        confetti.style.left =
-            Math.random() * 100 + "vw";
-
-        confetti.style.animationDuration =
-            Math.random() * 3 + 2 + "s";
+        // Dynamic element fallback styles so they scale properly on mobile/desktop
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 6 + "px";
+        confetti.style.height = Math.random() * 10 + 6 + "px";
+        confetti.style.position = "fixed";
+        confetti.style.top = "-10px";
+        confetti.style.zIndex = "9999";
+        confetti.style.pointerEvents = "none";
+        confetti.style.animation = "fall 3s linear forwards"; 
 
         document.body.appendChild(confetti);
 
         setTimeout(() => {
             confetti.remove();
-        }, 5000);
+        }, 3000);
     }
 }
